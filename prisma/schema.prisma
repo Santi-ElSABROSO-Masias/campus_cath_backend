@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Company {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  isActive  Boolean  @default(true)
+  users     User[]
+}
+
+enum Role {
+  SuperAdmin
+  AdminEmpresa
+  Instructor
+  Trabajador
+}
+
+enum UserType {
+  Permanente
+  Temporal
+  Visitante
+}
+
+model User {
+  id        String       @id @default(uuid()) @db.Uuid
+  dni       String       @unique
+  email     String?
+  name      String
+  lastName  String
+  password  String
+  role      Role         @default(Trabajador)
+  userType  UserType     @default(Temporal)
+  companyId String       @db.Uuid
+  company   Company      @relation(fields: [companyId], references: [id])
+  enrollments Enrollment[]
+}
+
+enum CourseType {
+  InduccionCorta
+  InduccionCompleta
+}
+
+model Course {
+  id              String       @id @default(uuid()) @db.Uuid
+  title           String
+  description     String
+  courseType      CourseType
+  timeLimitHours  Int?         
+  isPublished     Boolean      @default(false)
+  modules         CourseModule[]
+  enrollments     Enrollment[]
+}
+
+model CourseModule {
+  id            String    @id @default(uuid()) @db.Uuid
+  courseId      String    @db.Uuid
+  title         String
+  sequenceOrder Int
+  course        Course    @relation(fields: [courseId], references: [id])
+  activities    Activity[]
+}
+
+enum ActivityType {
+  Video
+  SCORM
+  Quiz
+  Documento
+}
+
+model Activity {
+  id            String             @id @default(uuid()) @db.Uuid
+  moduleId      String             @db.Uuid
+  activityType  ActivityType
+  title         String
+  contentUrl    String
+  passingScore  Int?
+  sequenceOrder Int
+  module        CourseModule       @relation(fields: [moduleId], references: [id])
+  attempts      ActivityAttempt[]
+}
+
+enum EnrollmentStatus {
+  EnProgreso
+  Completado
+  Vencido
+}
+
+model Enrollment {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  courseId           String             @db.Uuid
+  enrolledAt         DateTime           @default(now())
+  status             EnrollmentStatus   @default(EnProgreso)
+  progressPercentage Float              @default(0.0)
+  dueDate            DateTime?
+  user               User               @relation(fields: [userId], references: [id])
+  course             Course             @relation(fields: [courseId], references: [id])
+  attempts           ActivityAttempt[]
+  certificate        Certificate?
+}
+
+enum AttemptStatus {
+  Pendiente
+  Completado
+  Fallido
+}
+
+model ActivityAttempt {
+  id               String       @id @default(uuid()) @db.Uuid
+  enrollmentId     String       @db.Uuid
+  activityId       String       @db.Uuid
+  status           AttemptStatus @default(Pendiente)
+  score            Float?
+  timeSpentSeconds Int?         @default(0)
+  completedAt      DateTime?
+  enrollment       Enrollment   @relation(fields: [enrollmentId], references: [id])
+  activity         Activity     @relation(fields: [activityId], references: [id])
+}
+
+model Certificate {
+  id            String       @id @default(uuid()) @db.Uuid
+  enrollmentId  String       @unique @db.Uuid
+  qrCode        String       @unique
+  pdfUrl        String?
+  issuedAt      DateTime     @default(now())
+  expiresAt     DateTime?
+  enrollment    Enrollment   @relation(fields: [enrollmentId], references: [id])
+}
