@@ -12,12 +12,14 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const users_module_1 = require("./users/users.module");
+const courses_module_1 = require("./courses/courses.module");
+const enrollments_module_1 = require("./enrollments/enrollments.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, users_module_1.UsersModule],
+        imports: [auth_module_1.AuthModule, users_module_1.UsersModule, courses_module_1.CoursesModule, enrollments_module_1.EnrollmentsModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

@@ -37,6 +37,34 @@ export class UsersService {
                     }
                 }
             });
+
+            // Find or Auto-Create the main SSOMA Induction Course
+            let inductionCourse = await this.prisma.course.findFirst({
+                where: { courseType: 'InduccionCorta' }
+            });
+
+            if (!inductionCourse) {
+                inductionCourse = await this.prisma.course.create({
+                    data: {
+                        title: 'Inducción de Seguridad SSOMA',
+                        description: 'Curso obligatorio de seguridad para personal contratista.',
+                        courseType: 'InduccionCorta',
+                        isPublished: true,
+                        timeLimitHours: 2,
+                    }
+                });
+            }
+
+            // Auto-Enroll the new worker in the SSOMA Course right away
+            await this.prisma.enrollment.create({
+                data: {
+                    userId: newUser.id,
+                    courseId: inductionCourse.id,
+                    status: 'EnProgreso',
+                    progressPercentage: 0
+                }
+            });
+
             return newUser;
         } catch (error) {
             console.error('[USERS] Error creating worker:', error);
