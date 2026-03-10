@@ -40,6 +40,8 @@ model User {
   companyId String       @db.Uuid
   company   Company      @relation(fields: [companyId], references: [id])
   enrollments Enrollment[]
+  messagesSent     Message[] @relation("SentMessages")
+  messagesReceived Message[] @relation("ReceivedMessages")
 }
 
 enum CourseType {
@@ -132,4 +134,16 @@ model Certificate {
   issuedAt      DateTime     @default(now())
   expiresAt     DateTime?
   enrollment    Enrollment   @relation(fields: [enrollmentId], references: [id])
+}
+
+model Message {
+  id          String   @id @default(uuid()) @db.Uuid
+  senderId    String   @db.Uuid
+  receiverId  String   @db.Uuid
+  content     String   @db.Text
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }

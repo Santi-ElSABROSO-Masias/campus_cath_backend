@@ -9,6 +9,7 @@ export declare class AuthController {
             name: string;
             lastName: string;
             role: import("@prisma/client").$Enums.Role;
+            dni: string;
         };
     }>;
 }

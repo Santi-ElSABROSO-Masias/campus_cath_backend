@@ -11,6 +11,7 @@ export declare class AuthService {
             name: string;
             lastName: string;
             role: import("@prisma/client").$Enums.Role;
+            dni: string;
         };
     }>;
 }

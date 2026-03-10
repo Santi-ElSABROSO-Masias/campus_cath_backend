@@ -9,6 +9,7 @@ export class EnrollmentsService {
         const enrollments = await this.prisma.enrollment.findMany({
             where: { userId },
             include: {
+                user: true,
                 course: {
                     include: {
                         modules: {

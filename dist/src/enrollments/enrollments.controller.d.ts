@@ -4,6 +4,17 @@ export declare class EnrollmentsController {
     constructor(enrollmentsService: EnrollmentsService);
     getMyProgress(req: any): Promise<{
         computedProgress: number;
+        user: {
+            id: string;
+            name: string;
+            dni: string;
+            email: string | null;
+            lastName: string;
+            password: string;
+            role: import("@prisma/client").$Enums.Role;
+            userType: import("@prisma/client").$Enums.UserType;
+            companyId: string;
+        };
         course: {
             modules: ({
                 activities: {

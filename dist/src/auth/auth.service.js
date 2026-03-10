@@ -37,6 +37,7 @@ let AuthService = class AuthService {
                     name: user.name,
                     lastName: user.lastName,
                     role: user.role,
+                    dni: user.dni,
                 }
             };
         }
