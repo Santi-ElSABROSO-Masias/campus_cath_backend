@@ -22,7 +22,7 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
-                secret: process.env.JWT_SECRET || 'your-super-secret-jwt-token-with-at-least-32-characters-long',
+                secret: process.env.JWT_SECRET,
                 signOptions: { expiresIn: '8h' },
             }),
         ],
