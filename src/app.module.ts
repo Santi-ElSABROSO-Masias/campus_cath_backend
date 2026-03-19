@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CoursesModule } from './courses/courses.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
+import { NotificationsModule } from './notifications/notifications.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
@@ -13,7 +14,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
     AuthModule,
     UsersModule,
     CoursesModule,
-    EnrollmentsModule
+    EnrollmentsModule,
+    NotificationsModule
   ],
   controllers: [AppController],
   providers: [AppService],
