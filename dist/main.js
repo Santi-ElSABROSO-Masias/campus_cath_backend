@@ -10,7 +10,10 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use((0, helmet_1.default)());
     app.enableCors({
-        origin: 'https://plataforma-catalina-campus-cath.c2awqr.easypanel.host',
+        origin: [
+            'https://plataforma-catalina-pueba-cath.c2awqr.easypanel.host',
+            'https://plataforma-catalina-campus-cath.c2awqr.easypanel.host',
+        ],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
         credentials: true,
     });
