@@ -7,7 +7,10 @@ async function bootstrap() {
   
   app.use(helmet());
   app.enableCors({
-    origin: 'https://plataforma-catalina-campus-cath.c2awqr.easypanel.host',
+    origin: [
+      'https://plataforma-catalina-pueba-cath.c2awqr.easypanel.host',
+      'https://plataforma-catalina-campus-cath.c2awqr.easypanel.host',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   });
